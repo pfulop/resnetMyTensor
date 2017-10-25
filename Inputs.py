@@ -27,8 +27,8 @@ class Inputs:
         img_file = read_file(img_path)
         img_decoded = tf.image.decode_jpeg(img_file, channels=3)
         img_resized = tf.image.resize_images(img_decoded, [234, 234])
-
-        return img_resized, oh
+        img_processed = img_resized - [123.151630838, 115.902882574, 103.062623801 ]
+        return img_processed, oh
 
     def __convert(self):
         imgs = constant(self.images_paths)
