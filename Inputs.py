@@ -26,12 +26,11 @@ class Inputs:
         oh = one_hot(label, self.num_classes)
         img_file = read_file(img_path)
         img_decoded = tf.image.decode_jpeg(img_file, channels=3)
-        # img_decoded = tf.cast(img_decoded, tf.int32)
-        # red, green, blue = tf.split(img_decoded,3 ,2)
-        # img_processed = tf.concat([blue, green, red], 2)
+        img_decoded = tf.cast(img_decoded, tf.int32)
+        channels = tf.unstack(img_decoded, axis=-1)
+        img_decoded = tf.stack([channels[2], channels[1], channels[0]], axis=-1)
         img_resized = tf.image.resize_images(img_decoded, [224, 224])
-        # img_processed = img_resized - [103.062623801, 115.902882574, 123.151630838 ]
-        img_processed = img_resized
+        img_processed = img_resized - [103.062623801, 115.902882574, 123.151630838 ]
         return img_processed, oh
 
     def __convert(self):
